@@ -2,6 +2,7 @@ import "./App.css";
 import { useState } from "react";
 import { v1 } from "uuid";
 import { TodolistItem } from "./TodolistItem";
+import { CreateItemForm } from "./CreateItemForm";
 
 export type Task = {
   id: string;
@@ -63,9 +64,9 @@ export const App = () => {
   const getFilteredTasks = (tasks: Task[], filter: FilterValues) => {
     switch (filter) {
       case "active":
-        return tasks.filter((task) => !task.isDone);
-      case "completed":
         return tasks.filter((task) => task.isDone);
+      case "completed":
+        return tasks.filter((task) => !task.isDone);
     }
     return tasks;
   };
@@ -93,6 +94,45 @@ export const App = () => {
       ),
     });
   };
+
+
+  const changeTaskTitle = (
+    taskId: string,
+    newTitle: string,
+    todolistId: string
+  ) => {
+    setTasks({
+      ...tasks,
+      [todolistId]: tasks[todolistId].map((task) =>
+        task.id == taskId ? { ...task, title: newTitle } : task
+      ),
+    });
+  };
+
+
+  const changeTodoListTitle = (newTitle: string, todolistId: string ,) => {
+    setTodoLists(
+      todoLists.map((tl) =>
+        tl.id === todolistId ? { ...tl, title:newTitle } : tl
+      )
+    );
+  };
+
+  //create todolist
+  const createTodoList = (title: string) => {
+    const newTodo: TodoList = {
+      id: v1(),
+      title,
+      filter: 'all'
+    }
+    setTodoLists([...todoLists,newTodo])
+    setTasks({...tasks, [newTodo.id]:[]})
+  }  
+
+
+  //update todolist => update todolist title
+
+
   // const tasksForTodoList = getFilteredTasks(tasks, filter);
   const todolistComponents = todoLists.map((tl) => {
     return (
@@ -107,11 +147,14 @@ export const App = () => {
         changeTaskStatus={changeTaskStatus}
         filter={tl.filter}
         deleteTodolist={deleteTodolist}
+        changeTodoListTitle ={changeTodoListTitle}
+        changeTaskTitle={changeTaskTitle}
       />
     );
   });
   
   return <div className="app">
+    <CreateItemForm createItem={createTodoList}/>
     {todolistComponents}
     </div>;
 };
