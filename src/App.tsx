@@ -18,12 +18,16 @@ export const App = () =>{
     setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId ) )
   } 
 
-  let filteredTasks = tasks
-  if(filter === 'active'){
-    filteredTasks = tasks.filter(task => !task.isDone)
-  }
-  if(filter === 'completed'){
-    filteredTasks = tasks.filter(task => task.isDone)
+  
+  const filterTasks = ():TaskType[] => {
+    let filteredTasks = tasks
+    switch(filter){
+      case 'active':
+        return filteredTasks = tasks.filter(task => !task.isDone)
+      case 'completed':
+       return filteredTasks = tasks.filter(task => task.isDone)
+       default: return tasks;
+    }
   }
 
   const changeFilter = (filter: FilterValues) => {
@@ -36,15 +40,20 @@ export const App = () =>{
    setTasks(newTasks)
   }
   
+  const changeTaskStatus = (taskId: string, isDone: boolean) => {
+    setTasks(prevTasks => prevTasks.map(task => task.id === taskId ? {...task,isDone}: task))
+  }
 
   return (
       <div className="app">
         <TodolistItem 
         title='Todolist'
-         tasks={filteredTasks} 
+        filter = {filter}
+         tasks={filterTasks()} 
          deleteTasks = {deleteTasks}
          changeFilter= {changeFilter}
          createTasks = {createTasks}
+         changeTaskStatus = {changeTaskStatus}
          />
       </div>
   )
