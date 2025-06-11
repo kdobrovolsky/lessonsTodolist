@@ -1,6 +1,7 @@
-import { KeyboardEvent,ChangeEvent, useState } from 'react';
+import {ChangeEvent} from 'react';
 import { FilterValues } from '../App';
 import { Button } from './Button';
+import { AddItemFrom } from './AddItemFrom';
 
 export type TaskType = {
     id: string
@@ -20,49 +21,22 @@ export type TodolistItemPropsType = {
     createTasks: (todolistId: string,title: string) => void
     changeTaskStatus: (todolistId: string,taskId: string, isDone: boolean) => void
     removeTodolist: (todolisId: string) => void
+    
 }
 
-export const TodolistItem = ({title,filter, id,tasks,deleteTasks,changeFilter,createTasks,changeTaskStatus,removeTodolist}:TodolistItemPropsType) => {
-    const [taskTitle, setTaskTile] = useState('')
-    const [error, setError] = useState<null|string>(null)
-    
-    const changeTaskTitleHandler  = (e:ChangeEvent<HTMLInputElement>) => {
-        setTaskTile(e.currentTarget.value)
-        setError(null) // при введение чего-либо в инпут ошибка пропадает
-    }
-
-    const onClickButtonHandler = () => {
-
-        if(taskTitle !== ''){
-            createTasks(id,taskTitle.trim())
-            setTaskTile('')
-        }else{
-            setError('Title is required')
-        }
-        
-    }
-
-    const createTaskOnEnterHandler  = (e: KeyboardEvent<HTMLInputElement>) => {
-        if(e.key === 'Enter' && taskTitle !== ''){
-            createTasks(id,taskTitle.trim())
-            setTaskTile('')
-        }else{
-            setError('Title is required')
-        }
-    }
-
+export const TodolistItem = ({title,filter, id,tasks,deleteTasks,changeFilter,changeTaskStatus,createTasks,removeTodolist}:TodolistItemPropsType) => { 
     const removeTodolistHandler = () => {
         removeTodolist(id)
+    }
+
+    const addTask = (title: string) => {
+        createTasks(id,title)
     }
 
     return (
       <div>
         <h3>{title} <Button title='X' onClick={removeTodolistHandler}/></h3>
-        <div>
-          <input className={error ? "error": ''} value={taskTitle} onChange={changeTaskTitleHandler} onKeyDown={createTaskOnEnterHandler } />
-          <Button title={"+"} onClick={onClickButtonHandler}/>
-         <p className={error? 'error-message': ''}> {error}</p>
-        </div>
+        <AddItemFrom addItem={addTask} />
         {tasks.length === 0 
         ?(<p>No tasks</p>)
         :(
