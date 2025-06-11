@@ -56,6 +56,15 @@ export const App = () =>{
   }
   }
 
+  const changeTaskTitle = (todolistId: string,taskId: string, newTitle: string) => {
+    let tasksStatus = tasks[todolistId]
+    let task = tasksStatus.find(t => t.id ===taskId)
+    if(task){
+      task.title = newTitle
+      setTasks({...tasks})
+    }
+    }
+
   const todolistID1 = v1();
   const todolistID2 = v1();
 
@@ -114,6 +123,7 @@ export const App = () =>{
          createTasks = {createTasks}
          changeTaskStatus = {changeTaskStatus}
          removeTodolist ={ removeTodolist}
+         changeTaskTitle={changeTaskTitle}
          />
           )
         })}
