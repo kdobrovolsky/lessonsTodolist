@@ -26,6 +26,9 @@ importers:
       react-dom:
         specifier: 19.0.0
         version: 19.0.0(react@19.0.0)
+      todolist-05:
+        specifier: 'link:'
+        version: 'link:'
       uuid:
         specifier: 11.0.3
         version: 11.0.3
