@@ -2,6 +2,8 @@ import { v1 } from "uuid";
 import { TodolistItem } from "./components/TodolistsItem";
 import { useState } from "react";
 import "./App.css";
+import { EditableSpan } from "./components/EditableSpan";
+import { CreateItemForm } from "./components/CreateItemForm";
 
 export type FilterValues = "all" | "active" | "completed";
 
@@ -53,8 +55,24 @@ export const App = () => {
     setTasks({...tasks, [todolistId]:tasks[todolistId].map(t=> t.id === taskId? {...t, isDone}: t)})
   };
 
+  const changeTaskTitle = (todolistId: string,taskId: string, title: string) => {
+    setTasks({...tasks, [todolistId]:tasks[todolistId].map(t=> t.id === taskId? {...t, title: title}: t)})
+  };
+
+  const changeTaskTodolist = (todolistId: string, title: string) => {
+    setTodolists(todolists.map(t=> t.id === todolistId?{...t, title: title}: t))
+  }
+
+  const createTodolist = (title: string) =>  {
+    const todolistId = v1()
+    const newTodolist: TodolistsType = {id: todolistId, title: title, filter: 'all'}
+    setTodolists([newTodolist, ...todolists])
+    setTasks({...tasks, [todolistId]: []})
+  }
+
   return (
     <div>
+      <CreateItemForm addTask={createTodolist}/>
       {todolists.map((todolist) => {
         
         const changeFilterTasks = () => {
@@ -80,6 +98,8 @@ export const App = () => {
             changeFilter={changeFilter}
             createTasks={createTasks}
             changeTaskStatus={changeTaskStatus}
+            changeTaskTitle = {changeTaskTitle}
+            changeTaskTodolist = {changeTaskTodolist}
           />
         );
       })}
