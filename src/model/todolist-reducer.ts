@@ -29,8 +29,6 @@ export const todolistsReducer = (todolists: TodolistsType[], action:ActionType):
     }
    
 } 
-
-
 export const deleteTodolistAC = (id: string) => ({
     type: 'delete_todolist',
     payload: {

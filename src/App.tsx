@@ -1,5 +1,5 @@
 import { v1 } from "uuid";
-import { TodolistItem } from "./components/TodolistsItem";
+import { TaskType, TodolistItem } from "./components/TodolistsItem";
 import { useReducer, useState } from "react";
 import "./App.css";
 import { CreateItemForm } from "./components/CreateItemForm";
@@ -21,6 +21,10 @@ export type TodolistsType = {
   title: string;
   filter: FilterValues;
 };
+
+export type TasksState = {
+  [key: string]: TaskType[]
+}
 
 export const App = () => {
   const todolistID1 = v1();
