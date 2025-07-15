@@ -12,7 +12,7 @@ export const todolistsReducer = (todolists: TodolistsType[], action:ActionType):
     case 'delete_todolist':
         const {id} = action.payload
         return todolists.filter((t) => t.id !== id)
-    case 'create-todolist':
+    case 'create_todolist':
      
     const newTodolist: TodolistsType = {
       id: action.payload.id,
@@ -20,9 +20,9 @@ export const todolistsReducer = (todolists: TodolistsType[], action:ActionType):
       filter: "all",
     };
     return [...todolists, newTodolist]
-    case 'change-todolist-title':
+    case 'change_todolist_title':
         return  todolists.map((t) => (t.id === action.payload.id ? { ...t, title: action.payload.title } : t))
-    case 'change-todolist-filter':
+    case 'change_todolist_filter':
         return  todolists.map((t) => (t.id === action.payload.id ? { ...t, filter: action.payload.filter } : t))
    default:
     return todolists;
@@ -37,7 +37,7 @@ export const deleteTodolistAC = (id: string) => ({
 }as const)
 
 export const createTodolistAC = (title: string) => ({
-    type: 'create-todolist',
+    type: 'create_todolist',
    
     payload: {
         title,
@@ -47,7 +47,7 @@ export const createTodolistAC = (title: string) => ({
 
 
 export const changeTodolistTitleAC = ({id,title}: {id: string, title: string}) => ({
-    type: 'change-todolist-title',
+    type: 'change_todolist_title',
     payload:{
         id, 
         title
@@ -55,7 +55,7 @@ export const changeTodolistTitleAC = ({id,title}: {id: string, title: string}) =
 }as const)
 
 export const changeTodolistFilterAC = ({ id, filter }: { id: string; filter: FilterValues; }) => ({
-    type: 'change-todolist-filter',
+    type: 'change_todolist_filter',
     payload: {
         id,
         filter
