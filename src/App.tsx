@@ -36,6 +36,9 @@ export const App = () => {
   //   { id: todolistID2, title: "Todolist2", filter: "all" },
   // ]);
 
+
+
+  
   const [todolists, dispatchToTodolists] = useReducer(todolistsReducer,[
     { id: todolistID1, title: "Todolist1", filter: "all" },
     { id: todolistID2, title: "Todolist2", filter: "all" },
