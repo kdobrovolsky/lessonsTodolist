@@ -1,5 +1,5 @@
 import { v1 } from "uuid";
-import { FilterValues, TodolistsType } from "../App";
+import { FilterValues, TodolistsType } from "../app/App";
 
 export type DeleteTodolistActionType = ReturnType<typeof deleteTodolistAC>
 export type CreateTodolistActionType = ReturnType<typeof createTodolistAC>

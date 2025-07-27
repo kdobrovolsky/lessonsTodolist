@@ -1,5 +1,5 @@
 import { v1 } from "uuid";
-import { TasksState} from "../App";
+import { TasksState} from "../app/App";
 import { CreateTodolistActionType, DeleteTodolistActionType } from "./todolist-reducer";
 
 
@@ -17,6 +17,7 @@ ChangeTasksStatusActionType |
 ChangeTasksTitleActionType
 
 export const tasksReducer = (state: TasksState, action: ActionType):TasksState => {
+    debugger
     switch(action.type){
         case 'delete_todolist':{
             const stateCopy = {...state}

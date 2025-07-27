@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 import Button from "@mui/material/Button";
-import { FilterValues } from "../App";
+import { FilterValues } from "../app/App";
 
 import { CreateItemForm } from "./CreateItemForm";
 import { EditableSpan } from "./EditableSpan";

@@ -1,8 +1,6 @@
-import { v1 } from "uuid";
-import { TaskType, TodolistItem } from "./components/TodolistsItem";
-import { useReducer, useState } from "react";
+import { TaskType, TodolistItem } from "../components/TodolistsItem";
 import "./App.css";
-import { CreateItemForm } from "./components/CreateItemForm";
+import { CreateItemForm } from "../components/CreateItemForm";
 import {
   AppBar,
   Box,
@@ -12,8 +10,11 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { changeTodolistFilterAC, changeTodolistTitleAC, createTodolistAC, deleteTodolistAC, todolistsReducer } from "./model/todolist-reducer";
-import { changeTaskStatusAC, changeTaskTitleAC, createTaskAC, deleteTasksAC, tasksReducer } from "./model/tasks-reducer";
+import { changeTodolistFilterAC, changeTodolistTitleAC, createTodolistAC, deleteTodolistAC } from "../model/todolist-reducer";
+import { changeTaskStatusAC, changeTaskTitleAC, createTaskAC, deleteTasksAC } from "../model/tasks-reducer";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "./store";
+
 
 export type FilterValues = "all" | "active" | "completed";
 
@@ -28,46 +29,41 @@ export type TasksState = {
 }
 
 export const App = () => {
-  const todolistID1 = v1();
-  const todolistID2 = v1();
 
-  // const [todolists, setTodolists] = useState<TodolistsType[]>([
+  const dispatch = useDispatch()
+  const todolists = useSelector<RootState, TodolistsType[]>(state => state.todolists)
+  const tasks = useSelector<RootState, TasksState>(state => state.tasks)
+
+
+  // const [todolists, dispatchToTodolists] = useReducer(todolistsReducer,[
   //   { id: todolistID1, title: "Todolist1", filter: "all" },
   //   { id: todolistID2, title: "Todolist2", filter: "all" },
-  // ]);
+  // ] )
 
-
-
-  
-  const [todolists, dispatchToTodolists] = useReducer(todolistsReducer,[
-    { id: todolistID1, title: "Todolist1", filter: "all" },
-    { id: todolistID2, title: "Todolist2", filter: "all" },
-  ] )
-
-  const [tasks, dispatchTasks] = useReducer(tasksReducer,{
-    [todolistID1]: [
-      { id: v1(), title: "HTML&CSS", isDone: true },
-      { id: v1(), title: "JS", isDone: true },
-      { id: v1(), title: "ReactJS", isDone: false },
-    ],
-    [todolistID2]: [
-      { id: v1(), title: "Rest API", isDone: true },
-      { id: v1(), title: "GraphQL", isDone: false },
-    ],
-  });
+  // const [tasks, dispatchTasks] = useReducer(tasksReducer,{
+  //   [todolistID1]: [
+  //     { id: v1(), title: "HTML&CSS", isDone: true },
+  //     { id: v1(), title: "JS", isDone: true },
+  //     { id: v1(), title: "ReactJS", isDone: false },
+  //   ],
+  //   [todolistID2]: [
+  //     { id: v1(), title: "Rest API", isDone: true },
+  //     { id: v1(), title: "GraphQL", isDone: false },
+  //   ],
+  // });
 
 
   const deleteTasks = (todolistId: string, taskId: string) => {
-    dispatchTasks(deleteTasksAC({todolistId,taskId}))
+    dispatch(deleteTasksAC({todolistId,taskId}))
   };
 
   const changeFilter = (todolistId: string, filter: FilterValues) => {
     const action = changeTodolistFilterAC({id: todolistId, filter: filter})
-    dispatchToTodolists(action)
+    dispatch(action)
   };
 
   const createTasks = (todolistId: string, title: string) => {
-    dispatchTasks(createTaskAC({todolistId,title}))
+    dispatch(createTaskAC({todolistId,title}))
   };
 
   const changeTaskStatus = (
@@ -75,7 +71,7 @@ export const App = () => {
     taskId: string,
     isDone: boolean
   ) => {
-    dispatchTasks(changeTaskStatusAC({todolistId,taskId,isDone}));
+    dispatch(changeTaskStatusAC({todolistId,taskId,isDone}));
   };
 
   const changeTaskTitle = (
@@ -83,24 +79,22 @@ export const App = () => {
     taskId: string,
     title: string
   ) => {
-    dispatchTasks(changeTaskTitleAC({todolistId,taskId,title}))
+    dispatch(changeTaskTitleAC({todolistId,taskId,title}))
   };
 
   const changeTaskTodolist = (todolistId: string, title: string) => {
     const action = changeTodolistTitleAC({id: todolistId, title: title})
-    dispatchToTodolists(action)
+    dispatch(action)
   };
 
   const createTodolist = (title: string) => {
     const actionCreateTodo = createTodolistAC(title)
-    dispatchToTodolists(actionCreateTodo)
-    dispatchTasks(actionCreateTodo)
+    dispatch(actionCreateTodo)
   };
 
   const deleteTodolist = (todolistId: string) => {
-    dispatchToTodolists(deleteTodolistAC(todolistId))
+    dispatch(deleteTodolistAC(todolistId))
     delete tasks[todolistId]
-    dispatchTasks(deleteTodolistAC(todolistId))
   };
 
   return (
