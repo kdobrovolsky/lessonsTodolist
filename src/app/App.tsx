@@ -12,8 +12,11 @@ import {
 } from "@mui/material";
 import { changeTodolistFilterAC, changeTodolistTitleAC, createTodolistAC, deleteTodolistAC } from "../model/todolist-reducer";
 import { changeTaskStatusAC, changeTaskTitleAC, createTaskAC, deleteTasksAC } from "../model/tasks-reducer";
-import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./store";
+import { useAppSelector } from "../common/hooks/useAppSelector";
+import { useAppDispatch } from "../common/hooks/useAppDispatch";
+import { selectTodolists } from "./model/todolists-selectors";
+import { selectTasks } from "./model/tasks-selectore";
 
 
 export type FilterValues = "all" | "active" | "completed";
@@ -23,35 +26,15 @@ export type TodolistsType = {
   title: string;
   filter: FilterValues;
 };
-
 export type TasksState = {
   [key: string]: TaskType[]
 }
 
 export const App = () => {
 
-  const dispatch = useDispatch()
-  const todolists = useSelector<RootState, TodolistsType[]>(state => state.todolists)
-  const tasks = useSelector<RootState, TasksState>(state => state.tasks)
-
-
-  // const [todolists, dispatchToTodolists] = useReducer(todolistsReducer,[
-  //   { id: todolistID1, title: "Todolist1", filter: "all" },
-  //   { id: todolistID2, title: "Todolist2", filter: "all" },
-  // ] )
-
-  // const [tasks, dispatchTasks] = useReducer(tasksReducer,{
-  //   [todolistID1]: [
-  //     { id: v1(), title: "HTML&CSS", isDone: true },
-  //     { id: v1(), title: "JS", isDone: true },
-  //     { id: v1(), title: "ReactJS", isDone: false },
-  //   ],
-  //   [todolistID2]: [
-  //     { id: v1(), title: "Rest API", isDone: true },
-  //     { id: v1(), title: "GraphQL", isDone: false },
-  //   ],
-  // });
-
+  const dispatch = useAppDispatch()
+  const todolists = useAppSelector(selectTodolists)
+  const tasks = useAppSelector<RootState, TasksState>(selectTasks)
 
   const deleteTasks = (todolistId: string, taskId: string) => {
     dispatch(deleteTasksAC({todolistId,taskId}))

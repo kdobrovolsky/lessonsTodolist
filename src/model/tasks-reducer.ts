@@ -16,8 +16,9 @@ CreateTasksActionType |
 ChangeTasksStatusActionType |
 ChangeTasksTitleActionType
 
-export const tasksReducer = (state: TasksState, action: ActionType):TasksState => {
-    debugger
+const initialState = {}
+
+export const tasksReducer = (state: TasksState = initialState, action: ActionType):TasksState => {
     switch(action.type){
         case 'delete_todolist':{
             const stateCopy = {...state}

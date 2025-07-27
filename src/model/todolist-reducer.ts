@@ -7,7 +7,9 @@ export type ChangeTodolistTitleActionType = ReturnType<typeof changeTodolistTitl
 export type ChangeTodolistFilterActionType = ReturnType<typeof changeTodolistFilterAC>
 type ActionType = DeleteTodolistActionType | CreateTodolistActionType | ChangeTodolistTitleActionType | ChangeTodolistFilterActionType
 
-export const todolistsReducer = (todolists: TodolistsType[], action:ActionType):TodolistsType[] => {
+const initialState: TodolistsType[] = []
+
+export const todolistsReducer = (todolists: TodolistsType[] =initialState, action:ActionType):TodolistsType[] => {
    switch (action.type) {
     case 'delete_todolist':
         const {id} = action.payload
