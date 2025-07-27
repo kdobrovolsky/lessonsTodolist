@@ -18,8 +18,7 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-redux": "^9.2.0",
-    "todolist-05": "link:",
-    "uuid": "11.0.3"
+    "todolist-05": "link:"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
